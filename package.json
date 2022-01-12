@@ -1,0 +1,22 @@
+{
+  "name": "roldan-arq-mailer",
+  "version": "1.0.0",
+  "description": "Roldán A. website mail service",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js"
+  },
+  "keywords": [
+    "nodemailer",
+    "express"
+  ],
+  "author": "Carlos Balsalobre Orenes",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2",
+    "nodemailer": "^6.7.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
