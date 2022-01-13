@@ -1,12 +1,29 @@
+require('dotenv').config();
+
 const express = require('express');
-const nodemailer = require('nodemailer');
+const {
+  ApiClient,
+  ContactsApi,
+  CreateContact } = require('sib-api-v3-sdk');
 
 const app = express();
 
-app.post('/send-email', (req, res) => {
-  console.log('Email enviado');
+const port = process.env.API_PORT ?? 3001;
+app.listen(port, () => {
+  console.log(`Service working in port: ${port}`);
 });
 
-app.listen(3001, () => {
-  console.log('Service working in port 3001');
+app.post('/sendemail', async (req, res) => {
+  req.body = {
+    email: 'holi'
+  };
+  const email = req.body.email;
+  const { authentications } = ApiClient.instance;
+  authentications['api-key'].apiKey = process.env.SENDINBLUE_API_KEY;
+
+  const apiInstance = new ContactsApi();
+  const createContact = new CreateContact();
+  createContact.email = email;
+  console.log(createContact);
+  console.log(apiInstance);
 });
