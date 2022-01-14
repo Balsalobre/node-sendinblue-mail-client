@@ -4,7 +4,9 @@ const express = require('express');
 const {
   ApiClient,
   ContactsApi,
-  CreateContact } = require('sib-api-v3-sdk');
+  CreateContact,
+  TransactionalEmailsApi
+} = require('sib-api-v3-sdk');
 
 const app = express();
 
@@ -13,10 +15,7 @@ app.listen(port, () => {
   console.log(`Service working in port: ${port}`);
 });
 
-app.post('/sendemail', async (req, res) => {
-  req.body = {
-    email: 'holi'
-  };
+app.post('/join-newsletter', async (req, res) => {
   const email = req.body.email;
   const { authentications } = ApiClient.instance;
   authentications['api-key'].apiKey = process.env.SENDINBLUE_API_KEY;
@@ -24,6 +23,48 @@ app.post('/sendemail', async (req, res) => {
   const apiInstance = new ContactsApi();
   const createContact = new CreateContact();
   createContact.email = email;
-  console.log(createContact);
-  console.log(apiInstance);
+  createContact.listIds = [2];
+
+  try {
+    await apiInstance.createContact(createContact);
+    res.status(200).json({ message: 'User added to our newsletter' });
+  } catch (e) {
+    if (e.status === 400) {
+      const error = JSON.parse(e.response.text);
+      res.status(e.status).json({ ...error });
+    } else {
+      res.status(500).json({ error: e });
+    }
+  }
+});
+
+app.post('/sendemail', async (req, res) => {
+  // const { name, email, subject, emailBody } = req.body;
+  const { authentications } = ApiClient.instance;
+  authentications['api-key'].apiKey = process.env.SENDINBLUE_API_KEY;
+  const apiInstance = new TransactionalEmailsApi();
+  const sendSmtpEmail = {
+    sender: {
+      name: 'TEST TEST',
+      email: 'test@example.com',
+    },
+    to: [
+      {
+        email: process.env.SENDER_EMAIL_TO,
+        name: process.env.SENDER_NAME_TO,
+      },
+    ],
+    subject: 'Hello world',
+    htmlContent:
+      '<html><head></head><body><p>Hello,</p>This is my first transactional email sent from Sendinblue.</p></body></html>',
+  };
+
+  try {
+    const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
+    console.info('API called successfully. Returned data: ' + JSON.stringify(data));
+    res.status(200).json({ message: 'Email sent successfully' });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: 'Error sending email' });
+  }
 });

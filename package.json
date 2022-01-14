@@ -7,7 +7,7 @@
     "dev": "nodemon src/index.js"
   },
   "keywords": [
-    "nodemailer",
+    "Sendinblue",
     "express"
   ],
   "author": "Carlos Balsalobre Orenes",
