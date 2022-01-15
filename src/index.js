@@ -10,13 +10,18 @@ const {
 
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
+
 const port = process.env.API_PORT ?? 3001;
 app.listen(port, () => {
   console.log(`Service working in port: ${port}`);
 });
 
 app.post('/join-newsletter', async (req, res) => {
-  const email = req.body.email;
+  const { email } = req.body;
   const { authentications } = ApiClient.instance;
   authentications['api-key'].apiKey = process.env.SENDINBLUE_API_KEY;
 
@@ -39,14 +44,14 @@ app.post('/join-newsletter', async (req, res) => {
 });
 
 app.post('/sendemail', async (req, res) => {
-  // const { name, email, subject, emailBody } = req.body;
+  const { name, email, subject, emailBody } = req.body;
   const { authentications } = ApiClient.instance;
   authentications['api-key'].apiKey = process.env.SENDINBLUE_API_KEY;
   const apiInstance = new TransactionalEmailsApi();
   const sendSmtpEmail = {
     sender: {
-      name: 'TEST TEST',
-      email: 'test@example.com',
+      name,
+      email
     },
     to: [
       {
@@ -54,9 +59,9 @@ app.post('/sendemail', async (req, res) => {
         name: process.env.SENDER_NAME_TO,
       },
     ],
-    subject: 'Hello world',
+    subject,
     htmlContent:
-      '<html><head></head><body><p>Hello,</p>This is my first transactional email sent from Sendinblue.</p></body></html>',
+      `<html><head></head><body><p>${emailBody}</p></body></html>`,
   };
 
   try {
