@@ -44,6 +44,8 @@ app.post('/join-newsletter', async (req, res) => {
 });
 
 app.post('/sendemail', async (req, res) => {
+  const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  console.log(`IP address: ${ip}`);
   const { name, email, subject, emailBody } = req.body;
   const { authentications } = ApiClient.instance;
   authentications['api-key'].apiKey = process.env.SENDINBLUE_API_KEY;
@@ -66,7 +68,7 @@ app.post('/sendemail', async (req, res) => {
 
   try {
     const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
-    console.info('API called successfully. Returned data: ' + JSON.stringify(data));
+    console.log('API called successfully. Returned data: ' + JSON.stringify(data));
     res.status(200).json({ message: 'Email sent successfully' });
   } catch (e) {
     console.error(e);
