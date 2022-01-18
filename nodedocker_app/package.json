@@ -4,7 +4,8 @@
   "description": "Roldán A. website mail service",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js"
   },
   "keywords": [
     "Sendinblue",

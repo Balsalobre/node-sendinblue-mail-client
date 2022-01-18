@@ -15,7 +15,7 @@ app.use(express.urlencoded({
   extended: true
 }));
 
-const port = process.env.API_PORT ?? 3001;
+const port = process.env.API_PORT ?? 3347;
 app.listen(port, () => {
   console.log(`Service working in port: ${port}`);
 });
