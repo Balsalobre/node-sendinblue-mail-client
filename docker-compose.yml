@@ -4,6 +4,7 @@ services:
     nodejs-app:
         build:
           context: ./nodedocker_app
+        restart: always
         container_name: nodejsserver
         hostname: nodejsserver
         ports:
@@ -13,6 +14,7 @@ services:
     nginx:
         build:
           context: ./nginx
+        restart: always
         container_name: nginx
         hostname: nginx
         ports:
