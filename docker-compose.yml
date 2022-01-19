@@ -10,7 +10,7 @@ services:
         ports:
             - "3347:3347" 
         networks:
-            - example-net  
+            - mail-service-net  
     nginx:
         build:
           context: ./nginx
@@ -22,8 +22,8 @@ services:
         depends_on:
             - nodejs-app
         networks:
-            - example-net
+            - mail-service-net
 
 networks:
-  example-net:
+  mail-service-net:
     external: true
