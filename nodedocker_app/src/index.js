@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const express = require('express');
+const cors = require('cors');
 const {
   ApiClient,
   ContactsApi,
@@ -10,6 +11,9 @@ const {
 
 const app = express();
 
+app.use(cors({
+  origin: process.env.ALLOW_ORIGIN
+}));
 app.use(express.json());
 app.use(express.urlencoded({
   extended: true
