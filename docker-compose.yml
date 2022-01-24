@@ -10,18 +10,6 @@ services:
         ports:
             - "3347:3347" 
         networks:
-            - mail-service-net  
-    nginx:
-        build:
-          context: ./nginx
-        restart: always
-        container_name: nginx
-        hostname: nginx
-        ports:
-            - "80:80" 
-        depends_on:
-            - nodejs-app
-        networks:
             - mail-service-net
 
 networks:
