@@ -53,8 +53,6 @@ app.post('/join-newsletter', async (req, res) => {
 });
 
 app.post('/sendemail', async (req, res) => {
-  console.log(req.get('host'));
-  console.log(req.get('origin'));
   let ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
   console.log(`IP address: ${ip.replace(/^.*:/, '')}`);
   const { name, email, subject, emailBody } = req.body;
