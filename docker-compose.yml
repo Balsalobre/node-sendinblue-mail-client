@@ -14,6 +14,4 @@ services:
 
 networks:
   mail-service-net:
-    external:
-      name: mail-service-net
-     
+    external: true
