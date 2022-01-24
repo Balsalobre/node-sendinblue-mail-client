@@ -8,6 +8,7 @@ const {
   CreateContact,
   TransactionalEmailsApi
 } = require('sib-api-v3-sdk');
+const package = require('../package.json');
 
 const app = express();
 
@@ -22,6 +23,10 @@ app.use(express.urlencoded({
 const port = process.env.API_PORT ?? 3347;
 app.listen(port, () => {
   console.log(`Service working in port: ${port}`);
+});
+
+app.get('/', (req, res) => {
+  res.status(200).json({ 'api-version': package.version });
 });
 
 app.post('/join-newsletter', async (req, res) => {

@@ -1,6 +1,6 @@
 {
   "name": "roldan-arq-mailer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Roldán A. website mail service",
   "main": "index.js",
   "scripts": {
