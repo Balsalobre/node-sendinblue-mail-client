@@ -55,6 +55,8 @@ app.post('/join-newsletter', async (req, res) => {
 app.post('/sendemail', async (req, res) => {
   let ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
   console.log(`IP address: ${ip.replace(/^.*:/, '')}`);
+  console.log(req.get('origin'));
+
   const { name, email, subject, emailBody } = req.body;
   const { authentications } = ApiClient.instance;
   authentications['api-key'].apiKey = process.env.SENDINBLUE_API_KEY;
