@@ -12,13 +12,9 @@ const package = require('../package.json');
 
 const app = express();
 
-app.use(cors({
-  origin: process.env.ALLOW_ORIGIN
-}));
-app.use(express.json());
-app.use(express.urlencoded({
-  extended: true
-}));
+app.use(cors({ origin: process.env.ALLOW_ORIGIN }));
+app.use(express.json({ limit: '1MB' }));
+app.use(express.urlencoded({ extended: true }));
 
 const port = process.env.API_PORT ?? 3347;
 app.listen(port, () => {
@@ -53,6 +49,11 @@ app.post('/join-newsletter', async (req, res) => {
 });
 
 app.post('/sendemail', async (req, res) => {
+  if(req.get('origin') !== process.env.ALLOW_ORIGIN) {
+    console.error('Origin not allowed');
+    res.status(405).json({ message: 'Not allowed'});
+    return;
+  }
   let ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
   console.log(`IP address: ${ip.replace(/^.*:/, '')}`);
   console.log(req.get('origin'));
