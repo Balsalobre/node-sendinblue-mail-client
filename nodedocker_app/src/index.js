@@ -1,4 +1,5 @@
 require('dotenv').config();
+const rateLimit = require('express-rate-limit');
 
 const express = require('express');
 const cors = require('cors');
@@ -20,6 +21,15 @@ const port = process.env.API_PORT ?? 3347;
 app.listen(port, () => {
   console.log(`Service working in port: ${port}`);
 });
+
+const limiter = rateLimit({
+  windowMs: process.env.MIN_LIMITER * 60 * 1000,
+	max: process.env.MAX_REQUEST, // Limit each IP to nº requests per `window`
+	standardHeaders: true,
+	legacyHeaders: false
+});
+
+app.use(limiter);
 
 app.get('/', (req, res) => {
   res.status(200).json({ 'api-version': package.version });
