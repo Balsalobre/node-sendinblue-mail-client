@@ -85,7 +85,13 @@ app.post('/sendemail', async (req, res) => {
     ],
     subject,
     htmlContent:
-      `<html><head></head><body><p>${emailBody}</p></body></html>`,
+      `<html>
+        <head>
+        </head>
+        <body>
+          <p style="white-space: pre-line">${emailBody}</p>
+        </body>
+      </html>`,
   };
 
   try {
